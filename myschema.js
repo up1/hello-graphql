@@ -12,7 +12,7 @@ let schema = new GraphQLSchema({
     fields: {
       score: {
         type: GraphQLInt,
-        description: 'Counter number',
+        description: 'Your Score',
         resolve: function() {
           return Math.max.apply(null, scores);
         }
