@@ -53,7 +53,7 @@ var queryType = new GraphQLObjectType({
   fields: function () {
     return {
       allUser: {
-        description: "Get all user",
+        description: 'Get all user',
         type: new GraphQLList(UserType),
         resolve: function () {
           return users;
@@ -63,8 +63,48 @@ var queryType = new GraphQLObjectType({
   }
 });
 
+var addUser = {
+  type: new GraphQLList(UserType),
+  description: 'Add new user',
+  args: {
+    id: {
+      name: 'User ID',
+      type: new GraphQLNonNull(GraphQLInt)
+    },
+    firstname: {
+      name: 'Firstname',
+      type: new GraphQLNonNull(GraphQLString)
+    },
+    lastname: {
+      name: 'Lastname',
+      type: new GraphQLNonNull(GraphQLString)
+    },
+    age: {
+      name: 'Age',
+      type: new GraphQLNonNull(GraphQLInt)
+    }
+  },
+  resolve: function(root, {id, firstname, lastname, age}) {
+    users.push({
+      id: id,
+      firstname: firstname,
+      lastname: lastname,
+      age: age
+    });
+    return users;
+  }
+};
+
+var mutationType = new GraphQLObjectType({
+  name: 'RootMutationType',
+  fields: {
+    addUser: addUser
+  }
+});
+
 let schema = new GraphQLSchema({
-  query: queryType
+  query: queryType,
+  mutation: mutationType
 });
 
 export default schema;
